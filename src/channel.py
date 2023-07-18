@@ -19,6 +19,30 @@ class Channel:
         self.views_count = 0
         self.print_info()
 
+    def __str__(self):
+        return f'{self.title} ({self.url})'
+
+    def __add__(self, other):
+        return self.subscribers_count + other.subscribers_count
+
+    def __sub__(self, other):
+        return self.subscribers_count - other.subscribers_count
+
+    def __gt__(self, other):
+        return self.subscribers_count > other.subscribers_count
+
+    def __ge__(self, other):
+        return self.subscribers_count >= other.subscribers_count
+
+    def __lt__(self, other):
+        return self.subscribers_count < other.subscribers_count
+
+    def __le__(self, other):
+        return self.subscribers_count <= other.subscribers_count
+
+    def __eq__(self, other):
+        return self.subscribers_count == other.subscribers_count
+
     @property
     def channel_id(self):
         return self.__channel_id
@@ -38,7 +62,7 @@ class Channel:
         self.video_count = int(data['statistics']['videoCount'])
         self.views_count = int(data['statistics']['viewCount'])
         info = json.dumps(self.channel, indent=2, ensure_ascii=False)
-        print(info)
+        # print(info)
 
     @classmethod
     def get_service(cls):
