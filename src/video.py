@@ -9,7 +9,7 @@ class Video:
     def __init__(self, id_video):
         """Экземпляр инициализируется id видео. Дальше все данные будут подтягиваться по API."""
         self.id_video = id_video
-        self.video_title = ""
+        self.title = ""
         self.view_count = 0
         self.like_count = 0
         self.comment_count = 0
@@ -20,14 +20,22 @@ class Video:
         """Выводит в консоль информацию о видео."""
         self.video = self.youtube.videos().list(part='snippet,statistics,contentDetails,topicDetails',
                                                 id=self.id_video).execute()
-        video_response = self.video['items'][0]
-        self.video_title: str = video_response['snippet']['title']
-        self.view_count: int = video_response['statistics']['viewCount']
-        self.like_count: int = video_response['statistics']['likeCount']
-        self.url: str = f'https://www.youtube.com/watch?v={self.id_video}'
+
+        try:
+            video_response = self.video['items'][0]
+            self.title: str = video_response['snippet']['title']
+            self.view_count: int = video_response['statistics']['viewCount']
+            self.like_count: int = video_response['statistics']['likeCount']
+            self.url: str = f'https://www.youtube.com/watch?v={self.id_video}'
+        except IndexError:
+            self.title = None
+            self.view_count = None
+            self.like_count = None
+            self.url = None
+            print(f'Видео с id:{self.id_video} не обнаружено')
 
     def __str__(self):
-        return f'{self.video_title}'
+        return f'{self.title}'
 
 
 class PLVideo(Video):
